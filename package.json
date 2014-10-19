@@ -1,0 +1,29 @@
+{
+    "name": "grunt-angular-configurator",
+    "description": "Create a config constant based on JSON files in Angular modules. Based on https://github.com/Kunstmaan/angular-super-seed",
+    "homepage": "https://github.com/TimmersThomas/grunt-angular-configurator",
+    "keywords": ["grunt", "angular"],
+    "author": {
+        "name": "Thomas Timmers",
+        "email": "me@timmersthomas.be"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/TimmersThomas/grunt-angular-configurator"
+    },
+    "main": "tasks/configurator.js",
+    "version": "0.1.0",
+    "dependencies": {
+        "lodash": "~2.4.1"
+    },
+    "scripts": {},
+    "licenses": [{
+        "type": "MIT",
+        "url": "https://raw.githubusercontent.com/Vitre/grunt-symfony/master/LICENSE"
+    }],
+    "files": ["tasks/configurator.js", "LICENSE"],
+    "readmeFilename": "README.md",
+    "bugs": {
+        "url": "https://github.com/TimmersThomas/grunt-angular-configurator/issues"
+    }
+}
