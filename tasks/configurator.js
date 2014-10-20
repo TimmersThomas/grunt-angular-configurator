@@ -66,7 +66,7 @@ function generateConfiguration(grunt, _, options){
 
 module.exports = function(grunt) {
 
-  grunt.registerTask('config-configuration', 'Generate a configuration based on the current ENVIRONMENT', function(envTarget) {
+  grunt.registerTask('ng_config_configurator', 'Generate a configuration based on the current ENVIRONMENT', function(envTarget) {
     var env = envTarget || grunt.config('env');
 
     // Merge task-specific and/or target-specific options with these defaults.
