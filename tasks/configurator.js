@@ -117,7 +117,10 @@ module.exports = function (grunt) {
             }
         );
 
+        grunt.log.debug("Generated content: " + generatedContent);
+
         grunt.file.write(options.export_dest, generatedContent);
+
         grunt.log.ok('Generated ' + options.export_dest);
     });
 };
