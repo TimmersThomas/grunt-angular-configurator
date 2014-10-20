@@ -66,7 +66,7 @@ function generateConfiguration(grunt, options){
               states,
               config,
               grunt.file.readJSON( path.resolve(options.general_config_folder, 'config.json') ),
-              grunt.file.readJSON( path.resolve(options.general_config_folder, 'config_' + env + '.json') )
+              grunt.file.readJSON( path.resolve(options.general_config_folder, 'config_' + options.env + '.json') )
             );
 
   grunt.log.debug("Generated Config: " + JSON.stringify(config));
