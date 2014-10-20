@@ -102,7 +102,7 @@ module.exports = function (grunt) {
             "variable": options.export_variable
         };
 
-        var generatedContent = grunt.template.process(template, templateData);
+        var generatedContent = grunt.template.process(template,{ data: templateData});
         generatedContent += JSON.stringify(configuraton, null, 4);
 
         if (options.browserify == false) {
