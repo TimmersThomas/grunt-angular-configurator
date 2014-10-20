@@ -9,6 +9,10 @@
 
 'use strict';
 
+var _ = require('lodash'),
+    path = require('path'),
+    fs = require('fs');
+
 function generateTemplateSimple() {
   var content = "'use strict';\n" +
                 "angular.module('<%= module %>')\n" +
@@ -29,7 +33,7 @@ function generateTemplateBrowserified() {
 };
 
 
-function generateConfiguration(grunt, _, options){
+function generateConfiguration(grunt, options){
   var files = grunt.file.expand({ filter: 'isDirectory'}, options.search_base + '*');
 
   var config = {},
@@ -85,7 +89,7 @@ module.exports = function(grunt) {
 
 
     var template = generateTemplateSimple(),
-        configuraton = generateConfiguration(grunt, _, options);
+        configuraton = generateConfiguration(grunt, options);
 
     if(options.browserify){
       template = generateTemplateBrowserified();
