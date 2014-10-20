@@ -3,7 +3,7 @@
  * @author vitre
  * @contributor Thomas Timmers
  * @licence MIT
- * @version 1.1.22
+ * @version 0.1.3
  * @url https://github.com/TimmersThomas/grunt-angular-configurator
  */
 
@@ -16,19 +16,19 @@ var _ = require('lodash'),
 function generateTemplateSimple() {
     var content = "'use strict';\n" +
         "angular.module('<%= module %>')\n" +
-        "    .constant('<%= variable %>', <%= config %>);";
+        "    .constant('<%= variable %>',";
 
     return content;
 };
 
 function generateTemplateBrowserified() {
-    var content = ""+
+    var content = "" +
         "'use strict';\n\n" +
         "exports.inject = function (appModule) {\n" +
         "   appModule.constant('<%= variable %>', exports.constant);\n" +
         "   return exports.constant;\n" +
         "};\n\n" +
-        "exports.constant = <%= config %>;";
+        "exports.constant = ";
 
     return content;
 };
@@ -40,20 +40,16 @@ function generateConfiguration(grunt, options) {
     var config = {},
         states = {};
 
-    grunt.log.debug("Reading files: " + JSON.stringify(files));
     _.forEach(files, function (dir) {
         var module = path.basename(dir),
             configFile = path.resolve(dir, options.config_folder, options.config_file_config),
             stateFile = path.resolve(dir, options.config_folder, options.config_file_state);
 
         if (fs.existsSync(configFile)) {
-            grunt.log.debug("File exists: " + configFile);
             _.merge(config, grunt.file.readJSON(configFile));
         }
 
         if (fs.existsSync(stateFile)) {
-            grunt.log.debug("File exists: " + stateFile);
-
             _.merge(states, {
                 states: _.mapValues(grunt.file.readJSON(stateFile), function (state) {
                     return _.extend({
@@ -71,8 +67,6 @@ function generateConfiguration(grunt, options) {
         grunt.file.readJSON(path.resolve(options.general_config_folder, 'config.json')),
         grunt.file.readJSON(path.resolve(options.general_config_folder, 'config_' + options.env + '.json'))
     );
-
-    grunt.log.debug("Generated Config: " + JSON.stringify(config));
 
     return config;
 }
@@ -96,8 +90,6 @@ module.exports = function (grunt) {
             "browserify": true
         });
 
-        grunt.log.debug("Using options: " + JSON.stringify(options));
-
         var template = generateTemplateSimple(),
             configuraton = generateConfiguration(grunt, options);
 
@@ -105,22 +97,22 @@ module.exports = function (grunt) {
             template = generateTemplateBrowserified();
         }
 
-        grunt.log.debug("Used template: " + template);
+        var templateData = {
+            "module": options.export_module,
+            "variable": options.export_variable
+        };
 
+        var generatedContent = grunt.template.process(template, templateData);
+        generatedContent += JSON.stringify(configuraton, null, 4);
 
-        var generatedContent = grunt.template.process(template, {
-                data: {
-                    "module": options.export_module,
-                    "variable": options.export_variable,
-                    "config": JSON.stringify(generateConfiguration(), null, 4)
-                }
-            }
-        );
-
-        grunt.log.debug("Generated content: " + generatedContent);
+        if (options.browserify == false) {
+            generatedContent += ");";
+        }
+        else {
+            generatedContent += ";";
+        }
 
         grunt.file.write(options.export_dest, generatedContent);
-
         grunt.log.ok('Generated ' + options.export_dest);
     });
 };
