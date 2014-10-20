@@ -22,12 +22,13 @@ function generateTemplateSimple() {
 };
 
 function generateTemplateBrowserified() {
-    var content = "'use strict';\n\n" +
+    var content = ""+
+        "'use strict';\n\n" +
         "exports.inject = function (appModule) {\n" +
         "   appModule.constant('<%= variable %>', exports.constant);\n" +
         "   return exports.constant;\n" +
         "};\n\n" +
-        "exports.constant = <%= config %>";
+        "exports.constant = <%= config %>;";
 
     return content;
 };
@@ -111,12 +112,12 @@ module.exports = function (grunt) {
                 data: {
                     "module": options.export_module,
                     "variable": options.export_variable,
-                    "config": generateConfiguration()
+                    "config": JSON.stringify(generateConfiguration(), null, 4)
                 }
             }
         );
 
-        fs.writeFile(options.export_dest, generatedContent);
+        grunt.file.write(options.export_dest, generatedContent);
         grunt.log.ok('Generated ' + options.export_dest);
     });
 };
